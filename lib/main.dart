@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:tmdb_movie_app/features/movie/data/datasources/movie_remote_data_source.dart';
-import 'package:tmdb_movie_app/features/movie/data/repositories/movie_repository_impl.dart';
-import 'package:tmdb_movie_app/features/movie/domain/usecase/get_popular_movies.dart';
 import 'package:tmdb_movie_app/features/movie/presentation/bloc/movie_bloc.dart';
 import 'package:tmdb_movie_app/features/movie/presentation/pages/movie_page.dart';
-import 'package:http/http.dart' as http;
+import 'package:tmdb_movie_app/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +12,7 @@ void main() async {
   } catch (e) {
     throw Exception('Error loading .env file: $e');
   }
+  await setupLocator();
   runApp(const MyApp());
 }
 
@@ -24,21 +21,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        Provider<GetPopularMovies>(
-          create: (context) => GetPopularMovies(
-            movieRepository: MovieRepositoryImpl(
-              remoteDataSource: MovieRemoteDataSourceImpl(
-                client: http.Client(),
-              ),
-            ),
-          ),
-        ),
         BlocProvider<MovieBloc>(
-          create: (context) => MovieBloc(
-            getPopularMovies: context.read<GetPopularMovies>(),
-          ),
+          create: (context) => sl<MovieBloc>(),
         ),
       ],
       child: MaterialApp(
