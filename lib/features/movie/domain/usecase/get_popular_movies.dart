@@ -7,7 +7,7 @@ class GetPopularMovies {
   final MovieRepository movieRepository;
   GetPopularMovies({required this.movieRepository});
 
-  Future<Either<Failure, List<MovieEntity>>> call() async {
-    return await movieRepository.getPopularMovies();
+  Future<Either<Failure, List<MovieEntity>>> call({required int page}) async {
+    return await movieRepository.getPopularMovies(page: page);
   }
 }

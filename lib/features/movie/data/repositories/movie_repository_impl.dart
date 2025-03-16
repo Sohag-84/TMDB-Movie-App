@@ -9,9 +9,9 @@ class MovieRepositoryImpl implements MovieRepository {
   const MovieRepositoryImpl({required this.remoteDataSource});
   
   @override
-  Future<Either<Failure, List<MovieEntity>>> getPopularMovies() async {
+  Future<Either<Failure, List<MovieEntity>>> getPopularMovies({required int page}) async {
     try {
-      final movieModel = await remoteDataSource.getPopularMovies();
+      final movieModel = await remoteDataSource.getPopularMovies(page: page);
       final movies = movieModel
           .map((model) => MovieEntity(
                 adult: model.adult,

@@ -5,18 +5,18 @@ import 'package:tmdb_movie_app/features/movie/data/models/movie_model.dart';
 import 'package:http/http.dart' as http;
 
 abstract interface class MovieRemoteDataSource {
-  Future<List<MovieModel>> getPopularMovies();
+  Future<List<MovieModel>> getPopularMovies({required int page});
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   final http.Client client;
   const MovieRemoteDataSourceImpl({required this.client});
   @override
-  Future<List<MovieModel>> getPopularMovies() async {
+  Future<List<MovieModel>> getPopularMovies({required int page}) async {
     try {
       final response = await client.get(
         Uri.parse(
-          'https://api.themoviedb.org/3/movie/popular?api_key=${dotenv.env['API_KEY']}',
+          'https://api.themoviedb.org/3/movie/popular?api_key=${dotenv.env['API_KEY']}&page=$page',
         ),
       );
 

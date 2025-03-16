@@ -13,10 +13,14 @@ final class MovieLoading extends MovieState {}
 
 final class MovieLoadingSuccess extends MovieState {
   final List<MovieEntity> movies;
-  const MovieLoadingSuccess({required this.movies});
+  final bool hasReachedMax;
+  const MovieLoadingSuccess({
+    required this.movies,
+    required this.hasReachedMax,
+  });
 
   @override
-  List<Object> get props => [movies];
+  List<Object> get props => [movies, hasReachedMax];
 }
 
 final class MovieLoadingError extends MovieState {
